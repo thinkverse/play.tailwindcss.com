@@ -378,6 +378,7 @@ export const Preview = forwardRef(
                     window.open(el.href, '_blank');
                   });
                   </script>
+                  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
                 </html>
               `}
             />
