@@ -15,6 +15,7 @@ import { ErrorOverlay } from '../components/ErrorOverlay'
 import Router from 'next/router'
 import { Header } from '../components/Header'
 import { Share } from '../components/Share'
+import { Clear } from '../components/Clear'
 import { TabBar } from '../components/TabBar'
 import { sizeToObject } from '../utils/size'
 import { getLayoutQueryString } from '../utils/getLayoutQueryString'
@@ -250,6 +251,22 @@ function Pen({
     [size.layout, responsiveDesignMode, responsiveSize]
   )
 
+  const onCleared = useCallback(
+    (content, callback) => {
+      setDirty(true)
+
+      onChange('html', content)
+
+      callback(content)
+  }, [onChange])
+
+  const onClearedComplete = useCallback(
+    (content) => {
+      setDirty(false)
+
+      editorRef.current.reset(content)
+  }, [editorRef])
+
   // initial state resets
   useEffect(() => {
     setSize((size) => ({ ...size, layout: initialLayout }))
@@ -292,6 +309,12 @@ function Pen({
           responsiveSize={responsiveDesignMode ? responsiveSize : undefined}
           activeTab={activeTab}
           tailwindVersion={tailwindVersion}
+        />
+        <Clear
+          initialContent={initialContent}
+          onCleared={onCleared}
+          onClearedComplete={onClearedComplete}
+          isLoading={isLoading}
         />
       </Header>
       <main className="flex-auto relative border-t border-gray-200 dark:border-gray-800">
